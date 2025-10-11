@@ -19,10 +19,10 @@
                                         <h5 class="card-title mb-2">{{ $p->title }}</h5>
                                         <div class="text-muted mb-2">{{ $p->city }} - {{ $p->state }}</div>
                                         <div class="mb-2">
-                                            <span class="me-3"><i class="bi bi-arrows-angle-expand"></i> {{ $p->area }} m²</span>
-                                            <span class="me-3"><i class="bi bi-bed"></i> {{ $p->bedrooms }}</span>
-                                            <span class="me-3"><i class="bi bi-droplet"></i> {{ $p->bathrooms }}</span>
-                                            <span class="me-3"><i class="bi bi-car-front"></i> {{ $p->garages }}</span>
+                                            <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
+                                            <span class="me-3"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
+                                            <span class="me-3"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
+                                            <span class="me-3"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
                                         </div>
                                         <div class="h5 brand-text">R$ {{ number_format($p->price,2,',','.') }}</div>
                                         <a href="{{ route('properties.show',$p->slug) }}" class="btn btn-outline-danger mt-2">Ver detalhes</a>
@@ -98,10 +98,10 @@
                         <div class="small text-muted">{{ $p->city }} - {{ $p->state }}</div>
                         <h6 class="card-title">{{ $p->title }}</h6>
                         <div class="small mb-2">
-                            <span class="me-2"><i class="bi bi-arrows-angle-expand"></i> {{ $p->area }} m²</span>
-                            <span class="me-2"><i class="bi bi-bed"></i> {{ $p->bedrooms }}</span>
-                            <span class="me-2"><i class="bi bi-droplet"></i> {{ $p->bathrooms }}</span>
-                            <span class="me-2"><i class="bi bi-car-front"></i> {{ $p->garages }}</span>
+                            <span class="me-2"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
+                            <span class="me-2"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
+                            <span class="me-2"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
+                            <span class="me-2"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
                         </div>
                         <div class="fw-semibold brand-text">R$ {{ number_format($p->price,2,',','.') }}</div>
                     </div>

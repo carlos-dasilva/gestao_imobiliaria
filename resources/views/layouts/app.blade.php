@@ -18,29 +18,50 @@
         .muted-bg{ background-color: var(--muted); }
         .nav-link.active{ font-weight: 600; }
         .property-card img{ object-fit: cover; height: 180px; }
+        .logo-header{ height: 28px; }
+        .logo-footer{ height: 56px; }
+
+        /* Navbar refresh with brand palette */
+        .navbar.brand-bg{ border-bottom: 3px solid var(--muted); }
+        .navbar.brand-bg .navbar-brand,
+        .navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
+        .navbar.brand-bg .nav-link:hover,
+        .navbar.brand-bg .nav-link:focus{ color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+
+        /* Footer (UX refresh com paleta da marca) */
+        .footer{ background: var(--muted); color:#111827; }
+        .footer a{ color:#111827; text-decoration:none; }
+        .footer a:hover{ color:var(--primary); text-decoration:underline; }
+        .footer .heading{ color:#111827; font-weight:600; font-size:0.95rem; letter-spacing:.3px; }
+        .footer-accent{ height:4px; background:linear-gradient(90deg, var(--primary), #e24a4a); }
+        .social a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(202,25,25,.12); color:var(--primary); border:1px solid rgba(202,25,25,.25); transition:all .2s ease; }
+        .social a:hover{ background:var(--primary); color:#fff; transform:translateY(-2px); }
     </style>
+    @stack('head')
+    
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark brand-bg">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="/">Gestão Imobiliária</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
+                <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-header"/>
+                Gestão Imobiliária
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navegação">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="/imoveis">Imóveis</a></li>
+            <div class="collapse navbar-collapse align-items-center" id="mainNav">
+                <ul class="navbar-nav ms-3 me-auto gap-1">
+                    <li class="nav-item"><a class="nav-link {{ request()->is('imoveis*') ? 'active' : '' }}" href="{{ route('properties.index') }}">Imóveis</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}" href="{{ route('about') }}">Quem Somos</a></li>
                 </ul>
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     @auth
                         <li class="nav-item"><a class="nav-link" href="/admin">Admin</a></li>
                         <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}">@csrf
-                                <button class="btn btn-link nav-link">Sair</button>
-                            </form>
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a>
+                            <form id="logout-form" method="POST" action="{{ route('logout') }}" class="d-none">@csrf</form>
                         </li>
-                    @else
-                        <li class="nav-item"><a class="nav-link" href="/login">login</a></li>
                     @endauth
                 </ul>
             </div>
@@ -66,10 +87,57 @@
         @yield('content')
     </main>
 
-    <footer class="py-4 muted-bg mt-auto">
-        <div class="container d-flex justify-content-between">
-            <div class="small">&copy; {{ date('Y') }} Gestão Imobiliária</div>
-            <div class="small">Contato: contato@gestaoimobiliaria.local</div>
+    <footer class="mt-auto footer">
+        <div class="footer-accent"></div>
+        <div class="container py-5">
+            <div class="row gy-4">
+                <div class="col-12 col-lg-4">
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
+                        <div class="fs-5 fw-semibold">Gestão Imobiliária</div>
+                    </div>
+                    <div class="text-secondary small">
+                        Atendimento personalizado por corretora de imóveis autônoma. 
+                        Você navega pelos imóveis e fala direto com a profissional para tirar dúvidas e agendar visitas.
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="heading mb-2">Navegação</div>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a href="/" class="d-inline-flex align-items-center gap-2"><i class="bi bi-house-door"></i> Início</a></li>
+                        <li><a href="{{ route('properties.index') }}" class="d-inline-flex align-items-center gap-2"><i class="bi bi-building"></i> Imóveis</a></li>
+                        <li><a href="{{ route('about') }}" class="d-inline-flex align-items-center gap-2"><i class="bi bi-people"></i> Quem Somos</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="heading mb-2">Atendimento</div>
+                    <ul class="list-unstyled small mb-2">
+                        <li class="d-flex align-items-center gap-2"><i class="bi bi-envelope"></i> contato@gestaoimobiliaria.local</li>
+                        <li class="d-flex align-items-center gap-2"><i class="bi bi-telephone"></i> (00) 0000-0000</li>
+                    </ul>
+                    <div class="heading mb-2">Siga nas redes</div>
+                    <div class="d-flex gap-2 social">
+                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-2">
+                    <div class="heading mb-2">Institucional</div>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a href="{{ route('about') }}">Quem Somos</a></li>
+                        <li><a href="{{ route('privacy') }}">Política de Privacidade</a></li>
+                        <li><a href="{{ route('terms') }}">Termos de Uso</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25 my-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between small text-secondary">
+                <div>© {{ date('Y') }} Gestão Imobiliária. Todos os direitos reservados.</div>
+                <div>Feito com ❤️ para facilitar sua busca.</div>
+            </div>
         </div>
     </footer>
 

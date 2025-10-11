@@ -14,6 +14,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/imoveis', [PropertyPublicController::class, 'index'])->name('properties.index');
 Route::get('/imoveis/{slug}', [PropertyPublicController::class, 'show'])->name('properties.show');
 
+// Static pages
+Route::view('/quem-somos', 'pages.quem-somos')->name('about');
+Route::view('/politica-de-privacidade', 'pages.politica-privacidade')->name('privacy');
+Route::view('/termos-de-uso', 'pages.termos-uso')->name('terms');
+
 // Auth routes
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
