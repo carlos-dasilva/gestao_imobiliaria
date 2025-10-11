@@ -1,4 +1,4 @@
-@extends('admin.layout')
+﻿@extends('admin.layout2')
 
 @section('title','Novo Tipo')
 
@@ -16,7 +16,7 @@
                     <input name="slug" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Descrição</label>
+                    <label class="form-label">DescriÃ§Ã£o</label>
                     <textarea name="description" class="form-control"></textarea>
                 </div>
                 <button class="btn btn-danger">Salvar</button>
@@ -25,4 +25,5 @@
         </div>
     </div>
 @endsection
+
 

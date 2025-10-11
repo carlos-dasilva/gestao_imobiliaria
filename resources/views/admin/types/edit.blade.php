@@ -1,4 +1,4 @@
-@extends('admin.layout')
+﻿@extends('admin.layout2')
 
 @section('title','Editar Tipo')
 
@@ -16,7 +16,7 @@
                     <input name="slug" class="form-control" value="{{ old('slug',$type->slug) }}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Descrição</label>
+                    <label class="form-label">DescriÃ§Ã£o</label>
                     <textarea name="description" class="form-control">{{ old('description',$type->description) }}</textarea>
                 </div>
                 <button class="btn btn-danger">Atualizar</button>
@@ -25,4 +25,5 @@
         </div>
     </div>
 @endsection
+
 

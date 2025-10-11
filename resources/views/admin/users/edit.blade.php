@@ -1,6 +1,6 @@
-@extends('admin.layout')
+﻿@extends('admin.layout2')
 
-@section('title','Editar Usuário')
+@section('title','Editar UsuÃ¡rio')
 
 @section('admin-content')
     <div class="card">
@@ -14,4 +14,5 @@
         </div>
     </div>
 @endsection
+
 

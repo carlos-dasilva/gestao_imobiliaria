@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.layout2')
 
 @section('title','Tipos de Imóvel')
 

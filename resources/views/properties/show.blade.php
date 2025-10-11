@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', $property->title)
 
@@ -13,7 +13,7 @@
 
             @if($ordered->isNotEmpty())
                 <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="0" class="d-block">
-                    <img src="{{ asset('storage/'.$ordered->first()->path) }}" class="img-fluid rounded mb-2" alt="Capa do imóvel" style="height:400px; object-fit:cover; width:100%">
+                    <img src="{{ asset('storage/'.$ordered->first()->path) }}" class="img-fluid rounded mb-2" alt="Capa do imÃ³vel" style="height:400px; object-fit:cover; width:100%">
                 </a>
                 @if($ordered->count() > 1)
                     <div class="d-flex flex-wrap gap-2">
@@ -32,7 +32,7 @@
             <h3>{{ $property->title }}</h3>
             <div class="text-muted mb-2">{{ $property->city }} - {{ $property->state }}</div>
             <div class="mb-2">
-                <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $property->area }} m²</span>
+                <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $property->area }} mÂ²</span>
                 <span class="me-3"><x-icon name="bed" class="me-1 text-secondary" /> {{ $property->bedrooms }} quartos</span>
                 <span class="me-3"><x-icon name="shower" class="me-1 text-secondary" /> {{ $property->bathrooms }} banheiros</span>
                 <span class="me-3"><i class="bi bi-car-front text-secondary"></i> {{ $property->garages }} vagas</span>
@@ -86,3 +86,5 @@
     @endpush
     @endif
 @endsection
+
+

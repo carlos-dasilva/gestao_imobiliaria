@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.layout2')
 
 @section('title','Editar Imóvel')
 
@@ -41,3 +41,4 @@
         </div>
     </div>
 @endsection
+

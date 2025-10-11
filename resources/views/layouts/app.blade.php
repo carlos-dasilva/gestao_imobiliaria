@@ -3,16 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gestão Imobiliária - @yield('title','')</title>
+    @php( $__settings = \App\Models\SiteSetting::first() )
+    @php( $siteName = trim($__settings->site_name ?? '') !== '' ? trim($__settings->site_name) : 'Gestão Imobiliária' )
+    <title>{{ $siteName }} - @yield('title','')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-        :root{
-            --primary:#CA1919;
-            --muted:#D9D9D9;
-        }
+        :root{ --primary:#CA1919; --muted:#D9D9D9; }
         .brand-bg{ background-color: var(--primary); }
         .brand-text{ color: var(--primary); }
         .muted-bg{ background-color: var(--muted); }
@@ -20,15 +18,9 @@
         .property-card img{ object-fit: cover; height: 180px; }
         .logo-header{ height: 28px; }
         .logo-footer{ height: 56px; }
-
-        /* Navbar refresh with brand palette */
         .navbar.brand-bg{ border-bottom: 3px solid var(--muted); }
-        .navbar.brand-bg .navbar-brand,
-        .navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
-        .navbar.brand-bg .nav-link:hover,
-        .navbar.brand-bg .nav-link:focus{ color: #fff; text-decoration: underline; text-underline-offset: 4px; }
-
-        /* Footer (UX refresh com paleta da marca) */
+        .navbar.brand-bg .navbar-brand,.navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
+        .navbar.brand-bg .nav-link:hover,.navbar.brand-bg .nav-link:focus{ color:#fff; text-decoration: underline; text-underline-offset:4px; }
         .footer{ background: var(--muted); color:#111827; }
         .footer a{ color:#111827; text-decoration:none; }
         .footer a:hover{ color:var(--primary); text-decoration:underline; }
@@ -38,14 +30,13 @@
         .social a:hover{ background:var(--primary); color:#fff; transform:translateY(-2px); }
     </style>
     @stack('head')
-    
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark brand-bg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-header"/>
-                Gestão Imobiliária
+                {{ $siteName }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navegação">
                 <span class="navbar-toggler-icon"></span>
@@ -94,10 +85,10 @@
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-3 mb-2">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
-                        <div class="fs-5 fw-semibold">Gestão Imobiliária</div>
+                        <div class="fs-5 fw-semibold">{{ $siteName }}</div>
                     </div>
                     <div class="text-secondary small">
-                        Atendimento personalizado por corretora de imóveis autônoma. 
+                        Atendimento personalizado por corretora de imóveis autônoma.
                         Você navega pelos imóveis e fala direto com a profissional para tirar dúvidas e agendar visitas.
                     </div>
                 </div>
@@ -112,16 +103,31 @@
                 <div class="col-6 col-lg-3">
                     <div class="heading mb-2">Atendimento</div>
                     <ul class="list-unstyled small mb-2">
-                        <li class="d-flex align-items-center gap-2"><i class="bi bi-envelope"></i> contato@gestaoimobiliaria.local</li>
-                        <li class="d-flex align-items-center gap-2"><i class="bi bi-telephone"></i> (00) 0000-0000</li>
+                        @php($__settings = \App\Models\SiteSetting::first())
+                        @if(!empty($__settings?->email))
+                          <li class="d-flex align-items-center gap-2"><i class="bi bi-envelope"></i> {{ $__settings->email }}</li>
+                        @endif
+                        @if(!empty($__settings?->phone))
+                          <li class="d-flex align-items-center gap-2"><i class="bi bi-telephone"></i> {{ $__settings->phone }}</li>
+                        @endif
                     </ul>
                     <div class="heading mb-2">Siga nas redes</div>
                     <div class="d-flex gap-2 social">
-                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
-                        <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        @if(!empty($__settings?->facebook_url))
+                          <a href="{{ $__settings->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        @endif
+                        @if(!empty($__settings?->instagram_url))
+                          <a href="{{ $__settings->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        @endif
+                        @if(!empty($__settings?->linkedin_url))
+                          <a href="{{ $__settings->linkedin_url }}" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        @endif
+                        @if(!empty($__settings?->youtube_url))
+                          <a href="{{ $__settings->youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+                        @endif
+                        @if(!empty($__settings?->whatsapp_url))
+                          <a href="{{ $__settings->whatsapp_url }}" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                        @endif
                     </div>
                 </div>
                 <div class="col-12 col-lg-2">
@@ -134,8 +140,8 @@
                 </div>
             </div>
             <hr class="border-secondary opacity-25 my-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between small text-secondary">
-                <div>© {{ date('Y') }} Gestão Imobiliária. Todos os direitos reservados.</div>
+                <div class="d-flex flex-column flex-md-row justify-content-between small text-secondary">
+                <div>© {{ date('Y') }} {{ $siteName }}. Todos os direitos reservados.</div>
                 <div>Feito com ❤️ para facilitar sua busca.</div>
             </div>
         </div>
