@@ -20,7 +20,7 @@
         .property-card img{ object-fit: cover; height: 180px; }
     </style>
 </head>
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark brand-bg">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">Gestão Imobiliária</a>
@@ -47,7 +47,7 @@
         </div>
     </nav>
 
-    <main class="container py-4">
+    <main class="container py-4 flex-grow-1">
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
@@ -66,7 +66,7 @@
         @yield('content')
     </main>
 
-    <footer class="py-4 muted-bg">
+    <footer class="py-4 muted-bg mt-auto">
         <div class="container d-flex justify-content-between">
             <div class="small">&copy; {{ date('Y') }} Gestão Imobiliária</div>
             <div class="small">Contato: contato@gestaoimobiliaria.local</div>
@@ -77,4 +77,3 @@
     @stack('scripts')
 </body>
 </html>
-
