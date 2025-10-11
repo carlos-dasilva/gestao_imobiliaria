@@ -61,8 +61,36 @@
     </div>
     <div class="col-12">
         <label class="form-label">Imagens (várias)</label>
-        <input type="file" name="images[]" class="form-control" multiple accept="image/*">
-        <div class="form-text">A primeira imagem enviada será definida como capa (você pode alterar depois).</div>
+        <input id="imagesInput" type="file" name="images[]" class="form-control" multiple accept="image/jpeg,image/png,image/webp">
+        <div id="imagesHelp" class="form-text">A primeira imagem enviada será definida como capa. Limite: 5 MB por imagem. Formatos: JPG, PNG, WEBP.</div>
+        <div id="imagesError" class="invalid-feedback"></div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+  (function(){
+    const input = document.getElementById('imagesInput');
+    const err = document.getElementById('imagesError');
+    if(!input) return;
+    const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+    input.addEventListener('change', () => {
+      let overs = [];
+      for (const f of input.files || []) {
+        if (f.size > MAX_BYTES) overs.push(`${f.name} (${(f.size/1024/1024).toFixed(2)} MB)`);
+      }
+      if (overs.length) {
+        const msg = `Alguns arquivos excedem 5 MB: ${overs.join(', ')}`;
+        input.classList.add('is-invalid');
+        err.textContent = msg;
+        input.setCustomValidity(msg);
+      } else {
+        input.classList.remove('is-invalid');
+        err.textContent = '';
+        input.setCustomValidity('');
+      }
+    });
+  })();
+  </script>
+@endpush
 

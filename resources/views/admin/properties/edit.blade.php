@@ -21,7 +21,7 @@
                 @foreach($property->images as $img)
                     <div class="col-6 col-md-3">
                         <div class="card h-100">
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" class="card-img-top" style="height:160px; object-fit:cover" />
+                            <img src="{{ asset('storage/'.$img->path) }}" class="card-img-top" style="height:160px; object-fit:cover" />
                             <div class="card-body p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <form method="POST" action="{{ route('admin.properties.images.cover',[$property,$img]) }}">

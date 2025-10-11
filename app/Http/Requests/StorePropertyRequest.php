@@ -30,5 +30,14 @@ class StorePropertyRequest extends FormRequest
             'images.*' => ['nullable', 'image', 'max:5120'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'images.*.uploaded' => 'Falha no upload da imagem. Verifique o tamanho (máx. 5 MB) e tente novamente.',
+            'images.*.max' => 'Cada imagem deve ter no máximo 5 MB.',
+            'images.*.image' => 'Envie apenas arquivos de imagem (JPG, PNG, WEBP).',
+        ];
+    }
 }
 

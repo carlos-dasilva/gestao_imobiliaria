@@ -13,13 +13,13 @@
 
             @if($ordered->isNotEmpty())
                 <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="0" class="d-block">
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url($ordered->first()->path) }}" class="img-fluid rounded mb-2" alt="Capa do imóvel" style="height:400px; object-fit:cover; width:100%">
+                    <img src="{{ asset('storage/'.$ordered->first()->path) }}" class="img-fluid rounded mb-2" alt="Capa do imóvel" style="height:400px; object-fit:cover; width:100%">
                 </a>
                 @if($ordered->count() > 1)
                     <div class="d-flex flex-wrap gap-2">
                         @foreach($ordered->slice(1)->values() as $i => $img)
                             <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="{{ $i + 1 }}">
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" class="rounded" alt="Foto {{ $i + 2 }}" style="height:90px; width:120px; object-fit:cover">
+                                <img src="{{ asset('storage/'.$img->path) }}" class="rounded" alt="Foto {{ $i + 2 }}" style="height:90px; width:120px; object-fit:cover">
                             </a>
                         @endforeach
                     </div>
@@ -56,7 +56,7 @@
                         <div class="carousel-inner">
                             @foreach($ordered as $img)
                                 <div class="carousel-item {{ $loop->first ? 'active':'' }}">
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" class="d-block w-100" alt="Imagem" style="max-height:70vh; object-fit:contain">
+                                    <img src="{{ asset('storage/'.$img->path) }}" class="d-block w-100" alt="Imagem" style="max-height:70vh; object-fit:contain">
                                 </div>
                             @endforeach
                         </div>

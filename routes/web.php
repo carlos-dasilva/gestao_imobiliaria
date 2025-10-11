@@ -41,4 +41,45 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::resource('users', AdminUserController::class)->parameters([
         'users' => 'user'
     ])->except(['show']);
+
+    // System diagnostics (upload settings)
+    Route::get('sys-info', function () {
+        $keys = [
+            'upload_max_filesize',
+            'post_max_size',
+            'max_file_uploads',
+            'file_uploads',
+            'memory_limit',
+            'upload_tmp_dir',
+        ];
+
+        $ini = [];
+        foreach ($keys as $k) {
+            $ini[$k] = ini_get($k);
+        }
+
+        $sapi = php_sapi_name();
+        $phpVersion = PHP_VERSION;
+        $sysTmp = sys_get_temp_dir();
+        $confTmp = $ini['upload_tmp_dir'] ?: null;
+        $appTmp = storage_path('app/tmp');
+
+        $checks = [
+            'sys_tmp' => [
+                'path' => $sysTmp,
+                'writable' => is_writable($sysTmp),
+            ],
+            'conf_tmp' => [
+                'path' => $confTmp,
+                'writable' => $confTmp ? is_writable($confTmp) : null,
+            ],
+            'app_tmp' => [
+                'path' => $appTmp,
+                'exists' => file_exists($appTmp),
+                'writable' => is_writable($appTmp),
+            ],
+        ];
+
+        return view('admin.sys-info', compact('ini','sapi','phpVersion','sysTmp','confTmp','appTmp','checks'));
+    })->name('sys-info');
 });
