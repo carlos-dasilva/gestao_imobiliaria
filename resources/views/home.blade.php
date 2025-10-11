@@ -13,7 +13,7 @@
                                 <div class="row g-0">
                                     <div class="col-md-6">
                                         @php $img = $p->images->first(); @endphp
-                                        <img src="{{ $img ? asset('storage/'.$img->path) : 'https://picsum.photos/800/400?random='.$p->id }}" class="d-block w-100" alt="{{ $p->title }}" style="height:300px; object-fit:cover">
+                                        <img src="{{ $img ? \Illuminate\Support\Facades\Storage::url($img->path) : asset('img/sem-foto.svg') }}" class="d-block w-100" alt="{{ $img ? $p->title : 'Sem Foto' }}" style="height:300px; object-fit:cover">
                                     </div>
                                     <div class="col-md-6 p-3">
                                         <h5 class="card-title mb-2">{{ $p->title }}</h5>
@@ -93,7 +93,7 @@
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card property-card h-100">
                     @php $img = $p->images->first(); @endphp
-                    <img src="{{ $img ? asset('storage/'.$img->path) : 'https://picsum.photos/400/300?random='.$p->id }}" class="card-img-top" alt="{{ $p->title }}">
+                    <img src="{{ $img ? \Illuminate\Support\Facades\Storage::url($img->path) : asset('img/sem-foto.svg') }}" class="card-img-top" alt="{{ $img ? $p->title : 'Sem Foto' }}">
                     <div class="card-body">
                         <div class="small text-muted">{{ $p->city }} - {{ $p->state }}</div>
                         <h6 class="card-title">{{ $p->title }}</h6>
@@ -115,4 +115,3 @@
         @endforelse
     </div>
 @endsection
-

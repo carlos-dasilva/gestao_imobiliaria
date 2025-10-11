@@ -9,12 +9,12 @@
                 @foreach($property->images as $img)
                     <div class="col-6 col-md-4">
                         <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="{{ $loop->index }}">
-                            <img src="{{ asset('storage/'.$img->path) }}" class="img-fluid rounded" alt="Imagem {{ $loop->iteration }}" style="height:140px; object-fit:cover; width:100%">
+                            <img src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" class="img-fluid rounded" alt="Imagem {{ $loop->iteration }}" style="height:140px; object-fit:cover; width:100%">
                         </a>
                     </div>
                 @endforeach
                 @if($property->images->isEmpty())
-                    <img src="https://picsum.photos/800/400?random={{ $property->id }}" class="img-fluid rounded" alt="Imagem">
+                    <img src="{{ asset('img/sem-foto.svg') }}" class="img-fluid rounded" alt="Sem Foto" style="height:300px; object-fit:cover; width:100%">
                 @endif
             </div>
         </div>
@@ -45,9 +45,14 @@
                         <div class="carousel-inner">
                             @foreach($property->images as $img)
                                 <div class="carousel-item {{ $loop->first ? 'active':'' }}">
-                                    <img src="{{ asset('storage/'.$img->path) }}" class="d-block w-100" alt="..." style="max-height:540px; object-fit:contain">
+                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($img->path) }}" class="d-block w-100" alt="..." style="max-height:540px; object-fit:contain">
                                 </div>
                             @endforeach
+                            @if($property->images->isEmpty())
+                                <div class="carousel-item active">
+                                    <img src="{{ asset('img/sem-foto.svg') }}" class="d-block w-100" alt="Sem Foto" style="max-height:540px; object-fit:contain">
+                                </div>
+                            @endif
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselGallery" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon"></span>
@@ -74,4 +79,3 @@
     </script>
     @endpush
 @endsection
-
