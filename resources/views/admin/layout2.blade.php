@@ -19,6 +19,9 @@
                 <a href="{{ route('admin.settings.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                     <i class="bi bi-gear brand-text"></i><span>Configurações</span>
                 </a>
+                <a href="{{ route('admin.about.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
+                    <i class="bi bi-person-vcard brand-text"></i><span>Quem Somos</span>
+                </a>
                 <a href="{{ route('admin.sys-info') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.sys-info') ? 'active' : '' }}">
                     <i class="bi bi-activity brand-text"></i><span>Diagnóstico</span>
                 </a>
@@ -29,3 +32,4 @@
         </div>
     </div>
 @endsection
+

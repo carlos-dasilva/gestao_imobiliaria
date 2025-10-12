@@ -5,19 +5,27 @@
 @section('content')
 <div class="row g-4">
   <div class="col-12 col-lg-8">
-    <h2 class="mb-3">Quem Sou</h2>
-    <p>Sou corretora de imóveis autônoma, focada em atender de forma humana e consultiva quem busca comprar, vender ou alugar um imóvel. Meu compromisso é oferecer informações claras, transparência em cada etapa e agilidade no atendimento.</p>
-    <h4 class="mt-4">Propósito</h4>
-    <p>Guiar você com segurança e serenidade na jornada do seu imóvel, do primeiro contato ao fechamento.</p>
-    <h4 class="mt-4">Como trabalho</h4>
-    <p>Atendimento personalizado, curadoria de imóveis alinhados ao seu perfil, agendamento de visitas e suporte na negociação e documentação.</p>
-    <h4 class="mt-4">Valores</h4>
-    <ul>
-      <li>Transparência e ética em todas as relações</li>
-      <li>Foco na sua necessidade e experiência</li>
-      <li>Agilidade e boa comunicação</li>
-      <li>Respeito à legislação (incluindo LGPD) e boas práticas do mercado</li>
-    </ul>
+    @php($about = \App\Models\AboutPage::with('values')->first())
+    @if(!empty($about?->who_i_am))
+      <h2 class="mb-3">Quem Sou</h2>
+      <p>{{ $about->who_i_am }}</p>
+    @endif
+    @if(!empty($about?->purpose))
+      <h4 class="mt-4">Propósito</h4>
+      <p>{{ $about->purpose }}</p>
+    @endif
+    @if(!empty($about?->how_i_work))
+      <h4 class="mt-4">Como trabalho</h4>
+      <p>{{ $about->how_i_work }}</p>
+    @endif
+    @if(!empty($about) && $about->values->count() > 0)
+      <h4 class="mt-4">Valores</h4>
+      <ul>
+        @foreach($about->values as $val)
+          <li>{{ $val->value }}</li>
+        @endforeach
+      </ul>
+    @endif
   </div>
   <div class="col-12 col-lg-4">
     <div class="card">
@@ -36,8 +44,6 @@
       </div>
     </div>
   </div>
-  <div class="col-12">
-    <div class="alert alert-secondary">Dica: personalize estes textos com sua especialidade, região de atuação e diferenciais.</div>
-  </div>
-  </div>
+</div>
 @endsection
+

@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
         // Admin padrão (altere a senha depois!)
@@ -34,5 +31,12 @@ class DatabaseSeeder extends Seeder
         ] as $t) {
             PropertyType::updateOrCreate(['slug' => $t['slug']], $t);
         }
+
+        // Configurações padrão (se não existir)
+        $this->call(\Database\Seeders\SiteSettingSeeder::class);
+
+        // Conteúdo padrão de Quem Somos (se não existir)
+        $this->call(\Database\Seeders\AboutPageSeeder::class);
     }
 }
+
