@@ -22,7 +22,9 @@ class SiteSettingFactory extends Factory
             'youtube_url' => 'https://www.youtube.com',
             'whatsapp_url' => 'https://wa.me/5551987654321',
             'system_log_enabled' => false,
+            'primary_color' => '#CA1919',
+            'secondary_color' => '#D9D9D9',
+            'background_color' => '#FFFFFF',
         ];
     }
 }
-

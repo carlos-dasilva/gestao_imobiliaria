@@ -26,6 +26,9 @@ class UpdateSiteSettingRequest extends FormRequest
             'youtube_url' => ['nullable','url','max:255'],
             'whatsapp_url' => ['nullable','url','max:255'],
             'system_log_enabled' => ['sometimes','boolean'],
+            'primary_color' => ['nullable','string','max:20'],
+            'secondary_color' => ['nullable','string','max:20'],
+            'background_color' => ['nullable','string','max:20'],
         ];
     }
 }

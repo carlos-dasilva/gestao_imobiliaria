@@ -22,5 +22,8 @@ class SiteSetting extends Model
         'youtube_url',
         'whatsapp_url',
         'system_log_enabled',
+        'primary_color',
+        'secondary_color',
+        'background_color',
     ];
 }

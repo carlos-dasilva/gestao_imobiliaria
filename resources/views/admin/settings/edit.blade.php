@@ -28,6 +28,31 @@
           <input name="creci" class="form-control" value="{{ old('creci', $settings->creci ?? '') }}" placeholder="Ex.: 12345-F">
         </div>
 
+        <div class="col-md-4">
+          <label class="form-label">Cor primária</label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" id="primary_color_picker" class="form-control form-control-color" value="{{ old('primary_color', $settings->primary_color ?? '#CA1919') }}" title="Escolha a cor primária">
+            <input type="text" id="primary_color" name="primary_color" class="form-control" value="{{ old('primary_color', $settings->primary_color ?? '#CA1919') }}" placeholder="#CA1919">
+          </div>
+          <div class="form-text">Padrão: #CA1919</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Cor secundária</label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" id="secondary_color_picker" class="form-control form-control-color" value="{{ old('secondary_color', $settings->secondary_color ?? '#D9D9D9') }}" title="Escolha a cor secundária">
+            <input type="text" id="secondary_color" name="secondary_color" class="form-control" value="{{ old('secondary_color', $settings->secondary_color ?? '#D9D9D9') }}" placeholder="#D9D9D9">
+          </div>
+          <div class="form-text">Padrão: #D9D9D9</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Cor do fundo</label>
+          <div class="d-flex gap-2 align-items-center">
+            <input type="color" id="background_color_picker" class="form-control form-control-color" value="{{ old('background_color', $settings->background_color ?? '#FFFFFF') }}" title="Escolha a cor de fundo">
+            <input type="text" id="background_color" name="background_color" class="form-control" value="{{ old('background_color', $settings->background_color ?? '#FFFFFF') }}" placeholder="#FFFFFF">
+          </div>
+          <div class="form-text">Padrão: #FFFFFF</div>
+        </div>
+
         <div class="col-md-6">
           <label class="form-label">Logo</label>
           <input type="file" name="logo" class="form-control" accept=".png,.jpg,.jpeg,.svg,.webp">
@@ -86,4 +111,24 @@
     </form>
   </div>
 </div>
+@push('scripts')
+<script>
+  function bindColorPair(pickerId, inputId){
+    const picker = document.getElementById(pickerId);
+    const input = document.getElementById(inputId);
+    if(!picker || !input) return;
+    picker.addEventListener('input', () => { input.value = picker.value; });
+    input.addEventListener('input', () => {
+      const v = input.value.trim();
+      const hex = v.startsWith('#') ? v : ('#'+v);
+      if(/^#([0-9a-fA-F]{6})$/.test(hex)) { picker.value = hex; }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    bindColorPair('primary_color_picker','primary_color');
+    bindColorPair('secondary_color_picker','secondary_color');
+    bindColorPair('background_color_picker','background_color');
+  });
+</script>
+@endpush
 @endsection

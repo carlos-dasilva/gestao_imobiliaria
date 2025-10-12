@@ -15,14 +15,15 @@
         <link rel="icon" type="image/svg+xml" href="{{ asset('img/favicon.svg') }}">
     @endif
     <style>
-        :root{ --primary:#CA1919; --muted:#D9D9D9; }
+        html, body{ margin:0; padding:0; }
+        :root{ --primary: {{ trim($__settings->primary_color ?? '') !== '' ? trim($__settings->primary_color) : '#CA1919' }}; --muted: {{ trim($__settings->secondary_color ?? '') !== '' ? trim($__settings->secondary_color) : '#D9D9D9' }}; --bg: {{ trim($__settings->background_color ?? '') !== '' ? trim($__settings->background_color) : '#FFFFFF' }}; }
         .brand-bg{ background-color: var(--primary); }
         .brand-text{ color: var(--primary); }
         .muted-bg{ background-color: var(--muted); }
         .nav-link.active{ font-weight: 600; }
         .property-card img{ object-fit: cover; height: 180px; }
-        .logo-header{ height: 50px; width: 100px; }
-        .logo-footer{ height: 100px; width: 200px; }
+        .logo-header{ height: 50px; width: 100px; border-radius: 6px; }
+        .logo-footer{ height: 100px; width: 200px; border-radius: 6px; }
         .navbar.brand-bg{ border-bottom: 3px solid var(--muted); }
         .navbar.brand-bg .navbar-brand,.navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
         .navbar.brand-bg .nav-link:hover,.navbar.brand-bg .nav-link:focus{ color:#fff; text-decoration: underline; text-underline-offset:4px; }
@@ -33,11 +34,13 @@
         .footer-accent{ height:4px; background:linear-gradient(90deg, var(--primary), #e24a4a); }
         .social a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(202,25,25,.12); color:var(--primary); border:1px solid rgba(202,25,25,.25); transition:all .2s ease; }
         .social a:hover{ background:var(--primary); color:#fff; transform:translateY(-2px); }
+        body{ background-color: var(--bg); }
     </style>
     @stack('head')
+    @yield('head')
 </head>
-<body class="bg-light d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg navbar-dark brand-bg">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark brand-bg sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
                 <img src="{{ !empty($__settings?->logo_path) ? asset('storage/' . $__settings->logo_path) : asset('img/logo.svg') }}" alt="Logo" class="logo-header"/>
@@ -92,7 +95,7 @@
                         <img src="{{ !empty($__settings?->logo_path) ? asset('storage/' . $__settings->logo_path) : asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
                         <div class="fs-5 fw-semibold">{{ $siteName }}</div>
                     </div>
-                    <div class="text-secondary small">
+                    <div class="small">
                         Atendimento personalizado por corretora de imóveis autônoma.
                         Você navega pelos imóveis e fala direto com a profissional para tirar dúvidas e agendar visitas.
                     </div>
@@ -148,9 +151,9 @@
                 </div>
             </div>
             <hr class="border-secondary opacity-25 my-4">
-                <div class="d-flex flex-column flex-md-row justify-content-between small text-secondary">
-                <div>© {{ date('Y') }} {{ $siteName }}. Todos os direitos reservados.</div>
-                <div>Feito com ❤️ para facilitar sua busca.</div>
+                <div class="d-flex flex-column flex-md-row justify-content-between small">
+                <div>&copy; {{ date('Y') }} {{ $siteName }}. Todos os direitos reservados.</div>
+                <div>Feito com amor para facilitar sua busca.</div>
             </div>
         </div>
     </footer>
