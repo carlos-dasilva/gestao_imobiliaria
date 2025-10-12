@@ -1,0 +1,37 @@
+﻿@extends('layouts.app')
+
+@section('title','Quem Somos')
+
+@section('content')
+<div class="row g-4">
+  <div class="col-12 col-lg-8">
+    <h2 class="mb-3">Quem Sou</h2>
+    <p>Sou corretora de imÃ³veis autÃ´noma, focada em atender de forma humana e consultiva quem busca comprar, vender ou alugar um imÃ³vel. Meu compromisso Ã© oferecer informaÃ§Ãµes claras, transparÃªncia em cada etapa e agilidade no atendimento.</p>
+    <h4 class="mt-4">PropÃ³sito</h4>
+    <p>Guiar vocÃª com seguranÃ§a e serenidade na jornada do seu imÃ³vel, do primeiro contato ao fechamento.</p>
+    <h4 class="mt-4">Como trabalho</h4>
+    <p>Atendimento personalizado, curadoria de imÃ³veis alinhados ao seu perfil, agendamento de visitas e suporte na negociaÃ§Ã£o e documentaÃ§Ã£o.</p>
+    <h4 class="mt-4">Valores</h4>
+    <ul>
+      <li>TransparÃªncia e Ã©tica em todas as relaÃ§Ãµes</li>
+      <li>Foco na sua necessidade e experiÃªncia</li>
+      <li>Agilidade e boa comunicaÃ§Ã£o</li>
+      <li>Respeito Ã  legislaÃ§Ã£o (incluindo LGPD) e boas prÃ¡ticas do mercado</li>
+    </ul>
+  </div>
+  <div class="col-12 col-lg-4">
+    <div class="card">
+      <div class="card-header fw-semibold">Atendimento</div>
+      <div class="card-body">
+        <div class="mb-2"><i class="bi bi-envelope"></i> contato@gestaoimobiliaria.local</div>
+        <div class="mb-2"><i class="bi bi-telephone"></i> (00) 0000-0000</div>
+        <div class="text-muted small">CRECI: 000000</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="alert alert-secondary">Dica: personalize estes textos com sua especialidade, regiÃ£o de atuaÃ§Ã£o e diferenciais.</div>
+  </div>
+  </div>
+@endsection
+

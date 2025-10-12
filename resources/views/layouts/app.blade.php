@@ -110,6 +110,9 @@
                         @if(!empty($__settings?->phone))
                           <li class="d-flex align-items-center gap-2"><i class="bi bi-telephone"></i> {{ $__settings->phone }}</li>
                         @endif
+                        @if(!empty($__settings?->creci))
+                          <li class="d-flex align-items-center gap-2"><i class="bi bi-person-badge"></i> CRECI: {{ $__settings->creci }}</li>
+                        @endif
                     </ul>
                     <div class="heading mb-2">Siga nas redes</div>
                     <div class="d-flex gap-2 social">

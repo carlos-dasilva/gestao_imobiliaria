@@ -17,6 +17,7 @@ class UpdateSiteSettingRequest extends FormRequest
             'site_name' => ['nullable','string','max:35'],
             'email' => ['nullable','email','max:255'],
             'phone' => ['nullable','string','max:50'],
+            'creci' => ['nullable','string','max:50'],
             'facebook_url' => ['nullable','url','max:255'],
             'instagram_url' => ['nullable','url','max:255'],
             'linkedin_url' => ['nullable','url','max:255'],

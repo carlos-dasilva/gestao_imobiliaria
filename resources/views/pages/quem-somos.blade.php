@@ -23,9 +23,16 @@
     <div class="card">
       <div class="card-header fw-semibold">Atendimento</div>
       <div class="card-body">
-        <div class="mb-2"><i class="bi bi-envelope"></i> contato@gestaoimobiliaria.local</div>
-        <div class="mb-2"><i class="bi bi-telephone"></i> (00) 0000-0000</div>
-        <div class="text-muted small">CRECI: 000000</div>
+        @php($__settings = \App\Models\SiteSetting::first())
+        @if(!empty($__settings?->email))
+          <div class="mb-2"><i class="bi bi-envelope"></i> {{ $__settings->email }}</div>
+        @endif
+        @if(!empty($__settings?->phone))
+          <div class="mb-2"><i class="bi bi-telephone"></i> {{ $__settings->phone }}</div>
+        @endif
+        @if(!empty($__settings?->creci))
+          <div class="text-muted small">CRECI: {{ $__settings->creci }}</div>
+        @endif
       </div>
     </div>
   </div>

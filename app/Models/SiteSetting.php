@@ -13,6 +13,7 @@ class SiteSetting extends Model
         'site_name',
         'email',
         'phone',
+        'creci',
         'facebook_url',
         'instagram_url',
         'linkedin_url',

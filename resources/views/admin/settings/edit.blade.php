@@ -23,6 +23,10 @@
           <label class="form-label">Telefone</label>
           <input name="phone" class="form-control" value="{{ old('phone', $settings->phone ?? '') }}">
         </div>
+        <div class="col-md-6">
+          <label class="form-label">CRECI</label>
+          <input name="creci" class="form-control" value="{{ old('creci', $settings->creci ?? '') }}" placeholder="Ex.: 12345-F">
+        </div>
 
         <div class="col-md-6">
           <label class="form-label">Facebook URL</label>
