@@ -76,7 +76,7 @@
             <input class="form-check-input" type="checkbox" value="1" id="system_log_enabled" name="system_log_enabled" {{ old('system_log_enabled', $settings->system_log_enabled ?? false) ? 'checked' : '' }}>
             <label class="form-check-label" for="system_log_enabled">Log de Sistema</label>
           </div>
-          <div class="form-text">Somente administradores. Não aparece no rodapé.</div>
+          <div class="form-text">Deixar este campo sempre desmarcado</div>
         </div>
       </div>
       <div class="mt-3 d-flex gap-2">
