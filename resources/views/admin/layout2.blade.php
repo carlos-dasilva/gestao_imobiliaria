@@ -28,6 +28,9 @@
                 <a href="{{ route('admin.terms.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
                     <i class="bi bi-file-text brand-text"></i><span>Termos</span>
                 </a>
+                <a href="{{ route('admin.manual') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+                    <i class="bi bi-journal-text brand-text"></i><span>Manual do Admin</span>
+                </a>
                 <a href="{{ route('admin.sys-info') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.sys-info') ? 'active' : '' }}">
                     <i class="bi bi-activity brand-text"></i><span>Diagnóstico</span>
                 </a>
@@ -38,4 +41,3 @@
         </div>
     </div>
 @endsection
-

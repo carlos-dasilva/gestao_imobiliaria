@@ -24,7 +24,7 @@
         .property-card img{ object-fit: cover; height: 180px; }
         .logo-header{ height: 50px; width: 100px; border-radius: 6px; }
         .logo-footer{ height: 100px; width: 200px; border-radius: 6px; }
-        .navbar.brand-bg{ border-bottom: 3px solid var(--muted); }
+        .navbar.brand-bg{ border-bottom: 3px solid var(--muted); z-index: 1100; }
         .navbar.brand-bg .navbar-brand,.navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
         .navbar.brand-bg .nav-link:hover,.navbar.brand-bg .nav-link:focus{ color:#fff; text-decoration: underline; text-underline-offset:4px; }
         .footer{ background: var(--muted); color:#111827; }

@@ -1,0 +1,102 @@
+@extends('layouts.app')
+
+@section('title','Manual do Administrador')
+
+@section('content')
+<div class="row g-4">
+  <div class="col-12 col-lg-3">
+    <div class="list-group small" style="position: sticky; top: 82px; z-index: 1;">
+      <a class="list-group-item list-group-item-action" href="#primeiros-passos">Primeiros passos</a>
+      <a class="list-group-item list-group-item-action" href="#configuracoes">Configurações do Site</a>
+      <a class="list-group-item list-group-item-action" href="#quem-somos">Quem Somos</a>
+      <a class="list-group-item list-group-item-action" href="#privacidade">Política de Privacidade</a>
+      <a class="list-group-item list-group-item-action" href="#termos">Termos de Uso</a>
+      <a class="list-group-item list-group-item-action" href="#imoveis">Imóveis e Tipos</a>
+      <a class="list-group-item list-group-item-action" href="#usuarios">Usuários e Acesso</a>
+      <a class="list-group-item list-group-item-action" href="#diagnosticos">Diagnósticos e Uploads</a>
+      <a class="list-group-item list-group-item-action" href="#o-que-publico-faz">O que o público (não-admin) pode fazer</a>
+    </div>
+  </div>
+  <div class="col-12 col-lg-9">
+    <h2 class="mb-3">Manual do Administrador</h2>
+
+    <h4 id="primeiros-passos" class="mt-4">Primeiros passos</h4>
+    <ul>
+      <li>Acesse o painel: <a href="{{ route('admin.dashboard') }}">/admin</a>. Um usuário administrador padrão pode existir (conforme seed). Altere a senha assim que possível.</li>
+      <li>Configure o site em <a href="{{ route('admin.settings.edit') }}">/admin/settings</a>: nome, contatos, cores, logo e favicon.</li>
+      <li>Revise as páginas institucionais: <a href="{{ route('admin.about.edit') }}">/admin/about</a> (Quem Somos), <a href="{{ route('admin.privacy.edit') }}">/admin/privacy</a> (Privacidade), <a href="{{ route('admin.terms.edit') }}">/admin/terms</a> (Termos).</li>
+      <li>Crie os <strong>Tipos de Imóveis</strong> e depois cadastre <strong>Imóveis</strong>.</li>
+      <li>Verifique diagnósticos de upload em <a href="{{ route('admin.sys-info') }}">/admin/sys-info</a>.</li>
+    </ul>
+
+    <h4 id="configuracoes" class="mt-4">Configurações do Site</h4>
+    <p>Local: <a href="{{ route('admin.settings.edit') }}">Admin &gt; Configurações</a>. Impactos práticos de cada campo:</n></p>
+    <ul>
+      <li><strong>Nome do Sistema</strong>: Aparece no cabeçalho, rodapé e título do navegador. Padrão: “Gestão Imobiliária”.</li>
+      <li><strong>E-mail</strong> e <strong>Telefone</strong>: Exibidos no rodapé e no card de Atendimento da página <a href="{{ route('about') }}">/quem-somos</a>.</li>
+      <li><strong>CRECI</strong>: Exibido no rodapé e no card de Atendimento da página <a href="{{ route('about') }}">/quem-somos</a>.</li>
+      <li><strong>Logo</strong>: Substitui o logo padrão no cabeçalho (50×100) e rodapé (100×200). Borda levemente arredondada (6px).</li>
+      <li><strong>Favicon</strong>: Substitui o favicon padrão (usa <code>&lt;link rel="icon"&gt;</code> no &lt;head&gt;).</li>
+      <li><strong>Redes sociais</strong> (Facebook, Instagram, LinkedIn, YouTube, WhatsApp): Mostradas com ícones no rodapé.</li>
+      <li><strong>Cores</strong> (Primária, Secundária, Fundo): Alteram imediatamente as variáveis CSS <code>--primary</code>, <code>--muted</code>, <code>--bg</code> aplicadas em toda a interface.</li>
+      <li><strong>Log de Sistema</strong>: Quando marcado, registra todas as requisições no canal <code>system</code> (arquivos diários em <code>storage/logs/system-*.log</code>) com ID de requisição, headers, entrada e saída (trecho). Recomendado manter desmarcado.</li>
+    </ul>
+
+    <h4 id="quem-somos" class="mt-4">Quem Somos</h4>
+    <p>Local: <a href="{{ route('admin.about.edit') }}">Admin &gt; Quem Somos</a>. Controla a página pública <a href="{{ route('about') }}">/quem-somos</a>.</p>
+    <ul>
+      <li><strong>Quem Sou</strong>, <strong>Propósito</strong>, <strong>Como trabalho</strong>: preenchimento opcional; só aparece o que tiver conteúdo.</li>
+      <li><strong>Valores</strong>: lista dinâmica; itens em branco são ignorados na exibição.</li>
+      <li><strong>Atendimento</strong> (lado direito) é automático via Configurações: E-mail, Telefone e CRECI.</li>
+    </ul>
+
+    <h4 id="privacidade" class="mt-4">Política de Privacidade</h4>
+    <p>Local: <a href="{{ route('admin.privacy.edit') }}">Admin &gt; Privacidade</a>. Controla a página <a href="{{ route('privacy') }}">/politica-de-privacidade</a>.</p>
+    <ul>
+      <li><strong>Introdução</strong>, <strong>Bases Legais</strong>, <strong>Compartilhamento</strong>, <strong>Retenção</strong>, <strong>Direitos do titular</strong>, <strong>Segurança</strong>, <strong>Cookies</strong>, <strong>Atualizações</strong>: campos de texto livres, todos opcionais.</li>
+      <li><strong>Dados coletados</strong>: lista com <em>Título</em> (apresentado em negrito) e <em>Descrição</em>.</li>
+      <li><strong>Finalidades</strong>: lista simples de itens.</li>
+      <li>A numeração das seções é dinâmica: seções vazias são ocultadas e a contagem é ajustada automaticamente.</li>
+    </ul>
+
+    <h4 id="termos" class="mt-4">Termos de Uso</h4>
+    <p>Local: <a href="{{ route('admin.terms.edit') }}">Admin &gt; Termos</a>. Controla a página <a href="{{ route('terms') }}">/termos-de-uso</a>.</p>
+    <ul>
+      <li><strong>Termos de Uso (Introdução)</strong> e seções <strong>Serviços</strong>, <strong>Propriedade intelectual</strong>, <strong>Comunicações</strong>, <strong>Privacidade</strong>, <strong>Foro</strong>.</li>
+      <li><strong>Responsabilidades</strong>: lista dinâmica. Se estiver vazia, a seção é omitida.</li>
+      <li>Numeração de seções também é dinâmica conforme o conteúdo preenchido.</li>
+    </ul>
+
+    <h4 id="imoveis" class="mt-4">Imóveis e Tipos</h4>
+    <ul>
+      <li><strong>Tipos de Imóveis</strong> (<a href="{{ route('admin.types.index') }}">Admin &gt; Tipos</a>): cadastre categorias como Apartamento, Casa, etc. Isso organiza os imóveis.</li>
+      <li><strong>Imóveis</strong> (<a href="{{ route('admin.properties.index') }}">Admin &gt; Imóveis</a>): cadastro completo, upload de imagens, definição de capa e remoção de fotos.</li>
+      <li><strong>Público</strong>: navegação em <a href="{{ route('properties.index') }}">/imoveis</a> e página de detalhe por slug (endereço amigável gerado a partir do título, sem espaços/acentos; ex.: <code>/imoveis/apartamento-amplo-no-centro</code>).</li>
+    </ul>
+
+    <h4 id="usuarios" class="mt-4">Usuários e Acesso</h4>
+    <ul>
+      <li>Usuários com <strong>is_admin = true</strong> acessam o painel. O login fica em <a href="{{ route('login') }}">/login</a>.</li>
+      <li>O botão “Sair” encerra a sessão; não há cadastro público.</li>
+    </ul>
+
+    <h4 id="diagnosticos" class="mt-4">Diagnósticos e Uploads</h4>
+    <ul>
+      <li>Em <a href="{{ route('admin.sys-info') }}">Admin &gt; Diagnóstico</a> verifique limites do PHP, diretórios temporários e permissões de gravação.</li>
+      <li>Para servir arquivos enviados, garanta que o link simbólico de storage está criado (<code>php artisan storage:link</code>).</li>
+    </ul>
+
+    <h4 id="o-que-publico-faz" class="mt-4">O que o público (não-admin) pode fazer</h4>
+    <ul>
+      <li>Navegar pelos imóveis (<a href="{{ route('properties.index') }}">/imoveis</a>) e ver detalhes.</li>
+      <li>Ler páginas institucionais: <a href="{{ route('about') }}">/quem-somos</a>, <a href="{{ route('privacy') }}">/politica-de-privacidade</a>, <a href="{{ route('terms') }}">/termos-de-uso</a>.</li>
+      <li>Visualizar contatos (E-mail, Telefone) e CRECI no rodapé e em “Quem Somos”.</li>
+      <li>Não há cadastro público de usuários, nem acesso ao painel admin.</li>
+    </ul>
+
+    <div class="alert alert-warning mt-4">
+      Dica: Após ajustar logo, favicon e cores, revise as páginas institucionais. Mantenha o “Log de Sistema” desativado no dia a dia; ative apenas para auditoria/diagnóstico.
+    </div>
+  </div>
+</div>
+@endsection

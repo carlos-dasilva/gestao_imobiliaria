@@ -22,6 +22,11 @@ Route::get('/imoveis/{slug}', [PropertyPublicController::class, 'show'])->name('
 Route::view('/quem-somos', 'pages.quem-somos')->name('about');
 Route::view('/politica-de-privacidade', 'pages.politica-privacidade')->name('privacy');
 Route::view('/termos-de-uso', 'pages.termos-uso')->name('terms');
+// Admin manual (requires auth)
+Route::middleware('auth')->group(function () {
+    Route::view('/manual-do-admin', 'pages.manua-do-admin')->name('admin.manual');
+});
+Route::redirect('/manua-do-admin', '/manual-do-admin', 301);
 
 // Auth routes
 Route::get('/login', [LoginController::class, 'show'])->name('login');
