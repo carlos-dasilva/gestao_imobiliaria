@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\PropertyTypeController as AdminPropertyTypeContro
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\AboutController as AdminAboutController;
+use App\Http\Controllers\Admin\PrivacyController as AdminPrivacyController;
+use App\Http\Controllers\Admin\TermsController as AdminTermsController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -92,4 +94,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     // Quem Somos (singleton-style)
     Route::get('about', [AdminAboutController::class, 'edit'])->name('about.edit');
     Route::put('about', [AdminAboutController::class, 'update'])->name('about.update');
+
+    // Política de Privacidade (singleton-style)
+    Route::get('privacy', [AdminPrivacyController::class, 'edit'])->name('privacy.edit');
+    Route::put('privacy', [AdminPrivacyController::class, 'update'])->name('privacy.update');
+
+    // Termos de Uso (singleton-style)
+    Route::get('terms', [AdminTermsController::class, 'edit'])->name('terms.edit');
+    Route::put('terms', [AdminTermsController::class, 'update'])->name('terms.update');
 });

@@ -3,28 +3,52 @@
 @section('title','Termos de Uso')
 
 @section('content')
+@php($page = \App\Models\TermsPage::with('responsibilities')->first())
 <h2 class="mb-3">Termos de Uso</h2>
-<p>Ao acessar este site, você concorda com os termos abaixo. Leia atentamente.</p>
+@if(!empty($page?->terms_intro))
+  <p>{{ $page->terms_intro }}</p>
+@endif
 
-<h4>1. Serviços</h4>
-<p>Este site divulga imóveis e oferece atendimento prestado por uma corretora de imóveis autônoma. As informações podem ser fornecidas por proprietários e parceiros e estão sujeitas à verificação.</p>
+@php($sec = 0)
 
-<h4>2. Responsabilidades</h4>
-<ul>
-  <li>O usuário deve fornecer dados verdadeiros e atualizados ao entrar em contato.</li>
-  <li>Não me responsabilizo por indisponibilidades temporárias por manutenção ou força maior.</li>
-  <li>Reservo-me o direito de atualizar conteúdo, preços e disponibilidade sem aviso prévio.</li>
+@if(!empty($page?->services))
+  @php($sec++)
+  <h4>{{ $sec }}. Serviços</h4>
+  <p>{{ $page->services }}</p>
+@endif
+
+@if(!empty($page) && $page->responsibilities->count() > 0)
+  @php($sec++)
+  <h4>{{ $sec }}. Responsabilidades</h4>
+  <ul>
+    @foreach($page->responsibilities as $item)
+      <li>{{ $item->text }}</li>
+    @endforeach
   </ul>
+@endif
 
-<h4>3. Propriedade intelectual</h4>
-<p>Textos, logotipos, imagens e conteúdos são protegidos por direitos autorais e marcas. É vedada a reprodução sem autorização.</p>
+@if(!empty($page?->intellectual_property))
+  @php($sec++)
+  <h4>{{ $sec }}. Propriedade intelectual</h4>
+  <p>{{ $page->intellectual_property }}</p>
+@endif
 
-<h4>4. Comunicações</h4>
-<p>Você poderá receber e-mails ou mensagens transacionais relacionadas a suas solicitações e propostas.</p>
+@if(!empty($page?->communications))
+  @php($sec++)
+  <h4>{{ $sec }}. Comunicações</h4>
+  <p>{{ $page->communications }}</p>
+@endif
 
-<h4>5. Privacidade</h4>
-<p>O tratamento de dados pessoais segue a <a href="{{ route('privacy') }}">Política de Privacidade</a>.</p>
+@if(!empty($page?->privacy))
+  @php($sec++)
+  <h4>{{ $sec }}. Privacidade</h4>
+  <p>{{ $page->privacy }}</p>
+@endif
 
-<h4>6. Foro</h4>
-<p>Fica eleito o foro da comarca de sua sede para dirimir eventuais controvérsias, com renúncia a qualquer outro.</p>
+@if(!empty($page?->forum))
+  @php($sec++)
+  <h4>{{ $sec }}. Foro</h4>
+  <p>{{ $page->forum }}</p>
+@endif
 @endsection
+

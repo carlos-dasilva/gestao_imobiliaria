@@ -22,6 +22,12 @@
                 <a href="{{ route('admin.about.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.about.*') ? 'active' : '' }}">
                     <i class="bi bi-person-vcard brand-text"></i><span>Quem Somos</span>
                 </a>
+                <a href="{{ route('admin.privacy.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.privacy.*') ? 'active' : '' }}">
+                    <i class="bi bi-shield-lock brand-text"></i><span>Privacidade</span>
+                </a>
+                <a href="{{ route('admin.terms.edit') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
+                    <i class="bi bi-file-text brand-text"></i><span>Termos</span>
+                </a>
                 <a href="{{ route('admin.sys-info') }}" class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ request()->routeIs('admin.sys-info') ? 'active' : '' }}">
                     <i class="bi bi-activity brand-text"></i><span>Diagnóstico</span>
                 </a>
@@ -32,4 +38,3 @@
         </div>
     </div>
 @endsection
-

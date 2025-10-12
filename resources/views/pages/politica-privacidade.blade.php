@@ -3,41 +3,74 @@
 @section('title','Política de Privacidade')
 
 @section('content')
+@php($policy = \App\Models\PrivacyPolicy::with(['collectedItems','purposes'])->first())
 <h2 class="mb-3">Política de Privacidade</h2>
-<p>Valorizo sua privacidade. Este documento descreve como trato seus dados pessoais em conformidade com a Lei Geral de Proteção de Dados (LGPD – Lei 13.709/2018). Este site não possui área de login nem formulários de cadastro; você apenas navega pelos imóveis e entra em contato se desejar.</p>
+@if(!empty($policy?->policy_intro))
+<p>{{ $policy->policy_intro }}</p>
+@endif
 
-<h4>1. Dados coletados</h4>
+@php($sec = 0)
+
+@if(!empty($policy) && $policy->collectedItems->count() > 0)
+@php($sec++)
+<h4>{{ $sec }}. Dados coletados</h4>
 <ul>
-  <li><strong>Dados técnicos de navegação</strong>: endereço IP, user-agent e páginas visitadas gerados automaticamente pelo servidor web para segurança, estatística agregada e melhoria do site.</li>
-  <li><strong>Cookies</strong>: apenas cookies essenciais ao funcionamento (ex.: sessão). Não utilizo cookies analíticos nem de marketing neste momento. Se forem ativados no futuro, exibirei um aviso de consentimento.</li>
-  <li><strong>Dados de contato</strong>: caso você opte por falar comigo por e-mail/telefone/WhatsApp, tratarei as informações que você enviar na mensagem (ex.: nome, telefone, preferência de imóvel) para retornar o contato.</li>
+  @foreach($policy->collectedItems as $it)
+    <li><strong>{{ $it->title }}</strong>@if(!empty($it->description)): {{ $it->description }} @endif</li>
+  @endforeach
 </ul>
+@endif
 
-<h4>2. Finalidades</h4>
+@if(!empty($policy) && $policy->purposes->count() > 0)
+@php($sec++)
+<h4>{{ $sec }}. Finalidades</h4>
 <ul>
-  <li>Garantir segurança operacional do site (logs técnicos e prevenção a fraudes).</li>
-  <li>Responder solicitações, retornar contato e conduzir o atendimento quando você me contatar.</li>
-  <li>Propor imóveis alinhados ao seu interesse e agendar visitas.</li>
+  @foreach($policy->purposes as $p)
+    <li>{{ $p->text }}</li>
+  @endforeach
 </ul>
+@endif
 
-<h4>3. Bases legais</h4>
-<p>Legítimo interesse (divulgação de imóveis e atendimento), consentimento (quando aplicável) e cumprimento de obrigações legais.</p>
+@if(!empty($policy?->bases_legais))
+@php($sec++)
+<h4>{{ $sec }}. Bases legais</h4>
+<p>{{ $policy->bases_legais }}</p>
+@endif
 
-<h4>4. Compartilhamento</h4>
-<p>Se necessário, dados podem ser compartilhados com parceiros diretamente envolvidos no atendimento (ex.: proprietários, correspondentes, cartórios), sempre com medidas de segurança adequadas.</p>
+@if(!empty($policy?->compartilhamento))
+@php($sec++)
+<h4>{{ $sec }}. Compartilhamento</h4>
+<p>{{ $policy->compartilhamento }}</p>
+@endif
 
-<h4>5. Retenção</h4>
-<p>Os dados são mantidos pelo tempo necessário ao atendimento e conforme prazos legais aplicáveis.</p>
+@if(!empty($policy?->retencao))
+@php($sec++)
+<h4>{{ $sec }}. Retenção</h4>
+<p>{{ $policy->retencao }}</p>
+@endif
 
-<h4>6. Direitos do titular</h4>
-<p>Você pode solicitar confirmação de tratamento, acesso, correção, portabilidade, anonimização, eliminação e informações sobre compartilhamento pelo e-mail <strong>privacidade@gestaoimobiliaria.local</strong>.</p>
+@if(!empty($policy?->direitos_titular))
+@php($sec++)
+<h4>{{ $sec }}. Direitos do titular</h4>
+<p>{{ $policy->direitos_titular }}</p>
+@endif
 
-<h4>7. Segurança</h4>
-<p>Adoto medidas técnicas e administrativas para proteger seus dados (criptografia em trânsito, controles de acesso e registros de auditoria).</p>
+@if(!empty($policy?->seguranca))
+@php($sec++)
+<h4>{{ $sec }}. Segurança</h4>
+<p>{{ $policy->seguranca }}</p>
+@endif
 
-<h4>8. Cookies</h4>
-<p>Utilizo apenas cookies essenciais ao funcionamento. Você pode gerenciar cookies no seu navegador.</p>
+@if(!empty($policy?->cookies))
+@php($sec++)
+<h4>{{ $sec }}. Cookies</h4>
+<p>{{ $policy->cookies }}</p>
+@endif
 
-<h4>9. Atualizações</h4>
-<p>Esta política pode ser atualizada periodicamente. A versão vigente será publicada nesta página.</p>
+@if(!empty($policy?->atualizacoes))
+@php($sec++)
+<h4>{{ $sec }}. Atualizações</h4>
+<p>{{ $policy->atualizacoes }}</p>
+@endif
 @endsection
+

@@ -37,6 +37,11 @@ class DatabaseSeeder extends Seeder
 
         // Conteúdo padrão de Quem Somos (se não existir)
         $this->call(\Database\Seeders\AboutPageSeeder::class);
+
+        // Política de Privacidade padrão (se não existir)
+        $this->call(\Database\Seeders\PrivacyPolicySeeder::class);
+
+        // Termos de Uso padrão (se não existir)
+        $this->call(\Database\Seeders\TermsPageSeeder::class);
     }
 }
-
