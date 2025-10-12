@@ -9,6 +9,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    @if(!empty($__settings?->favicon_path))
+        <link rel="icon" href="{{ asset('storage/' . $__settings->favicon_path) }}">
+    @else
+        <link rel="icon" type="image/svg+xml" href="{{ asset('img/favicon.svg') }}">
+    @endif
     <style>
         :root{ --primary:#CA1919; --muted:#D9D9D9; }
         .brand-bg{ background-color: var(--primary); }
@@ -16,8 +21,8 @@
         .muted-bg{ background-color: var(--muted); }
         .nav-link.active{ font-weight: 600; }
         .property-card img{ object-fit: cover; height: 180px; }
-        .logo-header{ height: 28px; }
-        .logo-footer{ height: 56px; }
+        .logo-header{ height: 50px; width: 100px; }
+        .logo-footer{ height: 100px; width: 200px; }
         .navbar.brand-bg{ border-bottom: 3px solid var(--muted); }
         .navbar.brand-bg .navbar-brand,.navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
         .navbar.brand-bg .nav-link:hover,.navbar.brand-bg .nav-link:focus{ color:#fff; text-decoration: underline; text-underline-offset:4px; }
@@ -35,7 +40,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark brand-bg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
-                <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-header"/>
+                <img src="{{ !empty($__settings?->logo_path) ? asset('storage/' . $__settings->logo_path) : asset('img/logo.svg') }}" alt="Logo" class="logo-header"/>
                 {{ $siteName }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Alternar navegação">
@@ -84,7 +89,7 @@
             <div class="row gy-4">
                 <div class="col-12 col-lg-4">
                     <div class="d-flex align-items-center gap-3 mb-2">
-                        <img src="{{ asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
+                        <img src="{{ !empty($__settings?->logo_path) ? asset('storage/' . $__settings->logo_path) : asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
                         <div class="fs-5 fw-semibold">{{ $siteName }}</div>
                     </div>
                     <div class="text-secondary small">

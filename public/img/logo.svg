@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" width="200" height="48" role="img" aria-label="Logo genérico">
+<svg width="200" height="100" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gestão Imobiliária - logo padrão">
+  <title>Gestão Imobiliária</title>
+  <desc>Logo horizontal padrão nas cores #CA1919 e #D9D9D9 em 200x100.</desc>
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#CA1919"/>
-      <stop offset="100%" stop-color="#e44b4b"/>
+    <linearGradient id="roofGrad" x1="30" y1="34" x2="110" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#CA1919"/>
+      <stop offset="1" stop-color="#e24a4a"/>
     </linearGradient>
   </defs>
-  <rect width="200" height="48" rx="8" fill="#ffffff"/>
-  <g transform="translate(8,8)">
-    <rect x="0" y="0" width="32" height="32" rx="6" fill="url(#g)"/>
-    <path d="M6 18 L16 8 L26 18 L26 26 L6 26 Z" fill="#ffffff" opacity="0.9"/>
-    <circle cx="16" cy="13" r="3" fill="#ffffff"/>
+  <!-- Emblema (casa) à esquerda -->
+  <g>
+    <!-- Telhado -->
+    <path d="M30 50 L70 20 L110 50" fill="none" stroke="url(#roofGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Corpo da casa -->
+    <rect x="42" y="50" width="56" height="36" rx="4" fill="none" stroke="#CA1919" stroke-width="5"/>
+    <!-- Janelas -->
+    <rect x="48" y="58" width="14" height="12" fill="#D9D9D9"/>
+    <rect x="78" y="58" width="14" height="12" fill="#D9D9D9"/>
+    <!-- Porta -->
+    <rect x="65" y="58" width="10" height="28" fill="#D9D9D9"/>
   </g>
-  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" font-weight="700" font-size="18" fill="#1f2937" transform="translate(52,16)">
-    <text x="0" y="18">Gestão Imobiliária</text>
-  </g>
+  <!-- Barra de acento -->
+  <path d="M28 90 H172" stroke="#CA1919" stroke-width="3" stroke-linecap="round"/>
 </svg>
-

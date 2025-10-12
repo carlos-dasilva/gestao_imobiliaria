@@ -6,7 +6,7 @@
 <div class="card">
   <div class="card-header fw-semibold">Configurações do Site</div>
   <div class="card-body">
-    <form method="POST" action="{{ route('admin.settings.update') }}">
+    <form method="POST" action="{{ route('admin.settings.update') }}" enctype="multipart/form-data">
       @csrf
       @method('PUT')
       <div class="row g-3">
@@ -26,6 +26,28 @@
         <div class="col-md-6">
           <label class="form-label">CRECI</label>
           <input name="creci" class="form-control" value="{{ old('creci', $settings->creci ?? '') }}" placeholder="Ex.: 12345-F">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Logo</label>
+          <input type="file" name="logo" class="form-control" accept=".png,.jpg,.jpeg,.svg,.webp">
+          <div class="form-text">Padrão de exibição: 100px de altura e 200px de largura (recomendado PNG/SVG, fundo transparente).</div>
+          @if(!empty($settings?->logo_path))
+            <div class="mt-2">
+              <img src="{{ asset('storage/' . $settings->logo_path) }}" alt="Logo atual" style="height:100px;width:200px">
+            </div>
+          @endif
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Favicon</label>
+          <input type="file" name="favicon" class="form-control" accept=".ico,.png,.svg">
+          <div class="form-text">Recomendado: .ico 32x32 ou PNG/SVG quadrado.</div>
+          @if(!empty($settings?->favicon_path))
+            <div class="mt-2">
+              <img src="{{ asset('storage/' . $settings->favicon_path) }}" alt="Favicon atual" style="max-height:32px">
+            </div>
+          @endif
         </div>
 
         <div class="col-md-6">

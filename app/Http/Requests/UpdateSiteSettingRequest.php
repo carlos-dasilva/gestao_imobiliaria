@@ -18,6 +18,8 @@ class UpdateSiteSettingRequest extends FormRequest
             'email' => ['nullable','email','max:255'],
             'phone' => ['nullable','string','max:50'],
             'creci' => ['nullable','string','max:50'],
+            'logo' => ['nullable','mimes:png,jpg,jpeg,svg,webp','max:4096'],
+            'favicon' => ['nullable','mimes:ico,png,svg','max:1024'],
             'facebook_url' => ['nullable','url','max:255'],
             'instagram_url' => ['nullable','url','max:255'],
             'linkedin_url' => ['nullable','url','max:255'],

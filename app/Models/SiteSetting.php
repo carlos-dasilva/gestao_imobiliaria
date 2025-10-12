@@ -14,6 +14,8 @@ class SiteSetting extends Model
         'email',
         'phone',
         'creci',
+        'logo_path',
+        'favicon_path',
         'facebook_url',
         'instagram_url',
         'linkedin_url',
