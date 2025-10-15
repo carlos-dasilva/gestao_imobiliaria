@@ -95,11 +95,16 @@
                         <img src="{{ !empty($__settings?->logo_path) ? asset('storage/' . $__settings->logo_path) : asset('img/logo.svg') }}" alt="Logo" class="logo-footer"/>
                         <div class="fs-5 fw-semibold">{{ $siteName }}</div>
                     </div>
+                    @php( $__about = \App\Models\AboutPage::first() )
                     <div class="small">
+                        @if(!empty($__about?->who_i_am))
+                            {{ $__about->who_i_am }}
+                        @else
                         Atendimento personalizado por corretora de imóveis autônoma.
                         Você navega pelos imóveis e fala direto com a profissional para tirar dúvidas e agendar visitas.
+                        @endif
                     </div>
-                </div>
+                    </div>
                 <div class="col-6 col-lg-3">
                     <div class="heading mb-2">Navegação</div>
                     <ul class="list-unstyled small mb-0">
