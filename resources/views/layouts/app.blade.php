@@ -15,8 +15,8 @@
         <link rel="icon" type="image/svg+xml" href="{{ asset('img/favicon.svg') }}">
     @endif
     <style>
-        html, body{ margin:0; padding:0; }
-        :root{ --primary: {{ trim($__settings->primary_color ?? '') !== '' ? trim($__settings->primary_color) : '#CA1919' }}; --muted: {{ trim($__settings->secondary_color ?? '') !== '' ? trim($__settings->secondary_color) : '#D9D9D9' }}; --bg: {{ trim($__settings->background_color ?? '') !== '' ? trim($__settings->background_color) : '#FFFFFF' }}; }
+        html, body{ margin:0; padding:0; overflow-x:hidden; }
+        :root{ --primary: {{ trim($__settings->primary_color ?? '') !== '' ? trim($__settings->primary_color) : '#CA1919' }}; --muted: {{ trim($__settings->secondary_color ?? '') !== '' ? trim($__settings->secondary_color) : '#D9D9D9' }}; --bg: {{ trim($__settings->background_color ?? '') !== '' ? trim($__settings->background_color) : '#FFFFFF' }}; --nav-height: 64px; }
         .brand-bg{ background-color: var(--primary); }
         .brand-text{ color: var(--primary); }
         .muted-bg{ background-color: var(--muted); }
@@ -24,9 +24,11 @@
         .property-card img{ object-fit: cover; height: 180px; }
         .logo-header{ height: 50px; width: 100px; border-radius: 6px; }
         .logo-footer{ height: 100px; width: 200px; border-radius: 6px; }
-        .navbar.brand-bg{ border-bottom: 3px solid var(--muted); z-index: 1100; }
+        .navbar.brand-bg{ border-bottom: 3px solid var(--muted); z-index: 1100; position: fixed; top: 0; left: 0; right: 0; width:100%; padding-top: env(safe-area-inset-top); }
         .navbar.brand-bg .navbar-brand,.navbar.brand-bg .nav-link{ color: rgba(255,255,255,.95); }
         .navbar.brand-bg .nav-link:hover,.navbar.brand-bg .nav-link:focus{ color:#fff; text-decoration: underline; text-underline-offset:4px; }
+        .navbar .navbar-brand{ white-space: normal; word-break: break-word; }
+        @media (max-width: 576px){ .navbar .navbar-brand{ max-width: 65vw; } }
         .footer{ background: var(--muted); color:#111827; }
         .footer a{ color:#111827; text-decoration:none; }
         .footer a:hover{ color:var(--primary); text-decoration:underline; }
@@ -34,7 +36,13 @@
         .footer-accent{ height:4px; background:linear-gradient(90deg, var(--primary), #e24a4a); }
         .social a{ display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(202,25,25,.12); color:var(--primary); border:1px solid rgba(202,25,25,.25); transition:all .2s ease; }
         .social a:hover{ background:var(--primary); color:#fff; transform:translateY(-2px); }
-        body{ background-color: var(--bg); }
+        body{ background-color: var(--bg); padding-top: calc(var(--nav-height) + env(safe-area-inset-top)); }
+        @media (max-width: 576px){ :root{ --nav-height: 72px; } }
+        /* Corrige saltos/padding no topo quando modal abre no mobile */
+        .modal-open { padding-right: 0 !important; overflow-x:hidden; }
+        .modal-open .sticky-top, .modal-open .fixed-top { padding-right: 0 !important; }
+        /* Garante barra colada no topo enquanto o modal está aberto */
+        .modal-open .navbar.brand-bg{ position: fixed !important; top:0 !important; left:0; right:0; width:100%; }
     </style>
     @stack('head')
     @yield('head')
@@ -164,6 +172,30 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function(){
+            function resetModalPadding(){
+                try{
+                    document.body && (document.body.style.paddingRight = '0');
+                    document.querySelectorAll('.fixed-top, .sticky-top').forEach(function(el){
+                        el.style.paddingRight = '0';
+                        el.style.marginRight = '0';
+                    });
+                }catch(e){}
+            }
+            document.addEventListener('show.bs.modal', resetModalPadding);
+            document.addEventListener('shown.bs.modal', resetModalPadding);
+            document.addEventListener('hide.bs.modal', resetModalPadding);
+            document.addEventListener('hidden.bs.modal', function(){
+                // limpa estilos inline que possam ter sido aplicados
+                document.querySelectorAll('.fixed-top, .sticky-top').forEach(function(el){
+                    el.style.paddingRight = '';
+                    el.style.marginRight = '';
+                });
+                if(document.body){ document.body.style.paddingRight = ''; }
+            });
+        })();
+    </script>
     @stack('scripts')
 </body>
 </html>
