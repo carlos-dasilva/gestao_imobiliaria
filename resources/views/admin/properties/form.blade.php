@@ -1,4 +1,4 @@
-<div class="row g-3">
+﻿<div class="row g-3">
     <div class="col-md-8">
         <label class="form-label">Título</label>
         <input name="title" class="form-control" required value="{{ old('title', $property->title ?? '') }}">
@@ -65,6 +65,15 @@
         <div id="imagesHelp" class="form-text">A primeira imagem enviada será definida como capa. Limite: 5 MB por imagem. Formatos: JPG, PNG, WEBP.</div>
         <div id="imagesError" class="invalid-feedback"></div>
     </div>
+    <div class="col-12">
+        <label class="form-label">Vídeos (YouTube)</label>
+        <div id="videoUrlsContainer">
+            <input name="video_urls[]" class="form-control mb-2" placeholder="https://www.youtube.com/watch?v=..." value="">
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary" id="addVideoUrlBtn">Adicionar link</button>
+        <div class="form-text">Cole links do YouTube (watch, youtu.be, shorts).</div>
+        <div class="invalid-feedback" id="videosError"></div>
+    </div>
 </div>
 
 @push('scripts')
@@ -91,6 +100,17 @@
       }
     });
   })();
+  (function(){
+    const container = document.getElementById('videoUrlsContainer');
+    const addBtn = document.getElementById('addVideoUrlBtn');
+    if(!container || !addBtn) return;
+    addBtn.addEventListener('click', () => {
+      const input = document.createElement('input');
+      input.name = 'video_urls[]';
+      input.placeholder = 'https://youtu.be/...';
+      input.className = 'form-control mb-2';
+      container.appendChild(input);
+    });
+  })();
   </script>
 @endpush
-

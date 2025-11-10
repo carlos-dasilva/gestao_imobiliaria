@@ -6,20 +6,32 @@
     <div class="row g-4">
         <div class="col-lg-7 order-2 order-lg-1">
             @php
-                $images = $property->images->sortBy('sort_order');
-                $cover = $images->firstWhere('is_cover', true) ?? $images->first();
-                $ordered = $cover ? collect([$cover])->concat($images->where('id','!=',$cover->id)) : collect();
+                $imgs = $property->images->map(fn($i) => [
+                    'type'=>'image','id'=>$i->id,'is_cover'=>$i->is_cover,'sort'=>$i->sort_order,
+                    'src'=>asset('storage/'.$i->path)
+                ]);
+                $vids = $property->videos->map(fn($v) => [
+                    'type'=>'video','id'=>$v->id,'is_cover'=>$v->is_cover,'sort'=>$v->sort_order,
+                    'embed'=>$v->embed_url,'thumb'=>$v->thumb_url
+                ]);
+                $media = $imgs->merge($vids)->sortBy('sort')->values();
+                $cover = $media->firstWhere('is_cover', true) ?? $media->first();
+                $ordered = $cover ? collect([$cover])->concat($media->reject(fn($m)=>$m['id']==$cover['id'] && $m['type']==$cover['type'])) : collect();
             @endphp
 
             @if($ordered->isNotEmpty())
                 <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="0" class="d-block">
-                    <img src="{{ asset('storage/'.$ordered->first()->path) }}" class="img-fluid rounded mb-2" alt="Capa do imÃ³vel" style="height:400px; object-fit:cover; width:100%">
+                    <img src="{{ (($ordered->first()['type'] ?? '')==='video') ? $ordered->first()['thumb'] : $ordered->first()['src'] }}" class="img-fluid rounded mb-2" alt="Capa do imóvel" style="height:400px; object-fit:cover; width:100%">
                 </a>
                 @if($ordered->count() > 1)
                     <div class="d-flex flex-wrap gap-2">
-                        @foreach($ordered->slice(1)->values() as $i => $img)
+                        @foreach($ordered->slice(1)->values() as $i => $m)
                             <a href="#" data-bs-toggle="modal" data-bs-target="#galleryModal" data-index="{{ $i + 1 }}">
-                                <img src="{{ asset('storage/'.$img->path) }}" class="rounded" alt="Foto {{ $i + 2 }}" style="height:90px; width:120px; object-fit:cover">
+                                @if($m['type']==='video')
+                                    <img src="{{ $m['thumb'] }}" class="rounded" alt="Vídeo {{ $i + 2 }}" style="height:90px; width:120px; object-fit:cover">
+                                @else
+                                    <img src="{{ $m['src'] }}" class="rounded" alt="Foto {{ $i + 2 }}" style="height:90px; width:120px; object-fit:cover">
+                                @endif
                             </a>
                         @endforeach
                     </div>
@@ -38,7 +50,7 @@
             <div class="text-muted mb-2">{{ $property->city }} - {{ $property->state }}</div>
             <div class="mb-2 d-flex flex-wrap align-items-center gap-3 stats">
                 @if(($property->area ?? 0) > 0)
-                <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $property->area }} mÂ²</span>
+                <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $property->area }} m²</span>
                 @endif
                 @if(($property->bedrooms ?? 0) > 0)
                 <span class="me-3"><x-icon name="bed" class="me-1 text-secondary" /> {{ $property->bedrooms }} quartos</span>
@@ -76,9 +88,15 @@
                 <div class="modal-body">
                     <div id="carouselGallery" class="carousel slide" data-bs-ride="false">
                         <div class="carousel-inner">
-                            @foreach($ordered as $img)
+                            @foreach($ordered as $m)
                                 <div class="carousel-item {{ $loop->first ? 'active':'' }}">
-                                    <img src="{{ asset('storage/'.$img->path) }}" class="d-block w-100" alt="Imagem" style="max-height:70vh; object-fit:contain">
+                                    @if(($m['type'] ?? '')==='video')
+                                        <div class="ratio ratio-16x9">
+                                            <iframe src="{{ $m['embed'] }}" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        </div>
+                                    @else
+                                        <img src="{{ $m['src'] }}" class="d-block w-100" alt="Imagem" style="max-height:70vh; object-fit:contain">
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -259,5 +277,3 @@
     </script>
     @endpush
 @endsection
-
-

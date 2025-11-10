@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\PropertyVideo;
 
 class Property extends Model
 {
@@ -47,9 +48,18 @@ class Property extends Model
         return $this->hasMany(PropertyImage::class);
     }
 
+    public function videos(): HasMany
+    {
+        return $this->hasMany(PropertyVideo::class);
+    }
+
     public function coverImage(): ?PropertyImage
     {
         return $this->images()->where('is_cover', true)->first();
     }
-}
 
+    public function coverVideo(): ?PropertyVideo
+    {
+        return $this->videos()->where('is_cover', true)->first();
+    }
+}

@@ -21,7 +21,7 @@ class PropertyPublicController extends Controller
 
     public function show(string $slug)
     {
-        $property = Property::with(['type','images'])
+        $property = Property::with(['type','images','videos'])
             ->where('slug', $slug)
             ->where('status','Disponível')
             ->firstOrFail();
@@ -31,4 +31,3 @@ class PropertyPublicController extends Controller
         return view('properties.show', compact('property'));
     }
 }
-

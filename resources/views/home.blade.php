@@ -12,17 +12,32 @@
                             <div class="card border-0">
                                 <div class="row g-0">
                                     <div class="col-md-6">
-                                        @php $img = $p->images->first(); @endphp
-                                        <img src="{{ $img ? asset('storage/'.$img->path) : asset('img/sem-foto.svg') }}" class="d-block w-100" alt="{{ $img ? $p->title : 'Sem Foto' }}" style="height:300px; object-fit:cover">
+                                        @php
+                                            $coverImg = $p->images->firstWhere('is_cover', true) ?? $p->images->first();
+                                            $coverVid = $p->videos->firstWhere('is_cover', true);
+                                        @endphp
+                                        @if($coverVid)
+                                            <img src="{{ 'https://i.ytimg.com/vi/'.$coverVid->video_id.'/hqdefault.jpg' }}" class="d-block w-100" alt="Vídeo" style="height:300px; object-fit:cover">
+                                        @else
+                                            <img src="{{ $coverImg ? asset('storage/'.$coverImg->path) : asset('img/sem-foto.svg') }}" class="d-block w-100" alt="{{ $coverImg ? $p->title : 'Sem Foto' }}" style="height:300px; object-fit:cover">
+                                        @endif
                                     </div>
                                     <div class="col-md-6 p-3">
                                         <h5 class="card-title mb-2">{{ $p->title }}</h5>
                                         <div class="text-muted mb-2">{{ $p->city }} - {{ $p->state }}</div>
                                         <div class="mb-2">
-                                            <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
-                                            <span class="me-3"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
-                                            <span class="me-3"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
-                                            <span class="me-3"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
+                                            @if(($p->area ?? 0) > 0)
+                                                <span class="me-3"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
+                                            @endif
+                                            @if(($p->bedrooms ?? 0) > 0)
+                                                <span class="me-3"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
+                                            @endif
+                                            @if(($p->bathrooms ?? 0) > 0)
+                                                <span class="me-3"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
+                                            @endif
+                                            @if(($p->garages ?? 0) > 0)
+                                                <span class="me-3"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
+                                            @endif
                                         </div>
                                         <div class="h5 brand-text">R$ {{ number_format($p->price,2,',','.') }}</div>
                                         <a href="{{ route('properties.show',$p->slug) }}" class="btn btn-outline-danger mt-2">Ver detalhes</a>
@@ -92,16 +107,31 @@
         @forelse($list as $p)
             <div class="col-12 col-sm-6 col-lg-3">
                 <div class="card property-card h-100">
-                    @php $img = $p->images->first(); @endphp
-                    <img src="{{ $img ? asset('storage/'.$img->path) : asset('img/sem-foto.svg') }}" class="card-img-top" alt="{{ $img ? $p->title : 'Sem Foto' }}">
+                    @php
+                        $coverImg = $p->images->firstWhere('is_cover', true) ?? $p->images->first();
+                        $coverVid = $p->videos->firstWhere('is_cover', true);
+                    @endphp
+                    @if($coverVid)
+                        <img src="{{ 'https://i.ytimg.com/vi/'.$coverVid->video_id.'/hqdefault.jpg' }}" class="card-img-top" alt="Vídeo">
+                    @else
+                        <img src="{{ $coverImg ? asset('storage/'.$coverImg->path) : asset('img/sem-foto.svg') }}" class="card-img-top" alt="{{ $coverImg ? $p->title : 'Sem Foto' }}">
+                    @endif
                     <div class="card-body">
                         <div class="small text-muted">{{ $p->city }} - {{ $p->state }}</div>
                         <h6 class="card-title">{{ $p->title }}</h6>
                         <div class="small mb-2">
-                            <span class="me-2"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
-                            <span class="me-2"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
-                            <span class="me-2"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
-                            <span class="me-2"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
+                            @if(($p->area ?? 0) > 0)
+                                <span class="me-2"><i class="bi bi-bounding-box text-secondary"></i> {{ $p->area }} m²</span>
+                            @endif
+                            @if(($p->bedrooms ?? 0) > 0)
+                                <span class="me-2"><x-icon name="bed" class="me-1 text-secondary" /> {{ $p->bedrooms }}</span>
+                            @endif
+                            @if(($p->bathrooms ?? 0) > 0)
+                                <span class="me-2"><x-icon name="shower" class="me-1 text-secondary" /> {{ $p->bathrooms }}</span>
+                            @endif
+                            @if(($p->garages ?? 0) > 0)
+                                <span class="me-2"><i class="bi bi-car-front text-secondary"></i> {{ $p->garages }}</span>
+                            @endif
                         </div>
                         <div class="fw-semibold brand-text">R$ {{ number_format($p->price,2,',','.') }}</div>
                     </div>
@@ -115,4 +145,3 @@
         @endforelse
     </div>
 @endsection
-

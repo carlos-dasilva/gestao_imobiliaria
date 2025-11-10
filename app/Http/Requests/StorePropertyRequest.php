@@ -28,6 +28,8 @@ class StorePropertyRequest extends FormRequest
             'address' => ['nullable', 'string', 'max:255'],
             'status' => ['required', 'string', 'in:Disponível,Indisponível,Alugado,Vendido'],
             'images.*' => ['nullable', 'image', 'max:5120'],
+            'video_urls' => ['array'],
+            'video_urls.*' => ['nullable', 'string', 'url', 'max:512', 'regex:/^https?:\\/\\/(www\\.)?(youtube\\.com|youtu\\.be)\\//i'],
         ];
     }
 
@@ -37,7 +39,8 @@ class StorePropertyRequest extends FormRequest
             'images.*.uploaded' => 'Falha no upload da imagem. Verifique o tamanho (máx. 5 MB) e tente novamente.',
             'images.*.max' => 'Cada imagem deve ter no máximo 5 MB.',
             'images.*.image' => 'Envie apenas arquivos de imagem (JPG, PNG, WEBP).',
+            'video_urls.*.url' => 'Informe um link válido do YouTube.',
+            'video_urls.*.regex' => 'Apenas links do YouTube são aceitos.',
         ];
     }
 }
-

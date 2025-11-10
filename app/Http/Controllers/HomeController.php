@@ -14,13 +14,13 @@ class HomeController extends Controller
 
         $types = PropertyType::orderBy('name')->get();
 
-        $mostViewed = Property::with(['type','images'])
+        $mostViewed = Property::with(['type','images','videos'])
             ->where('status','Disponível')
             ->orderByDesc('views')
             ->limit(8)
             ->get();
 
-        $list = Property::with(['type','images'])
+        $list = Property::with(['type','images','videos'])
             ->where('status','Disponível')
             ->when(!empty($filters['city']), fn($q)=>$q->where('city','like','%'.$filters['city'].'%'))
             ->when(!empty($filters['max_price']), fn($q)=>$q->where('price','<=',(float)$filters['max_price']))
@@ -36,4 +36,5 @@ class HomeController extends Controller
         return view('home', compact('types','mostViewed','list','filters'));
     }
 }
+
 

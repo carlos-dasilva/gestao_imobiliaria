@@ -46,6 +46,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     ]);
     Route::post('properties/{property}/images/{image}/cover', [AdminPropertyController::class, 'setCover'])->name('properties.images.cover');
     Route::delete('properties/{property}/images/{image}', [AdminPropertyController::class, 'deleteImage'])->name('properties.images.destroy');
+    Route::post('properties/{property}/videos/{video}/cover', [AdminPropertyController::class, 'setCoverVideo'])->name('properties.videos.cover');
+    Route::delete('properties/{property}/videos/{video}', [AdminPropertyController::class, 'deleteVideo'])->name('properties.videos.destroy');
+    Route::post('properties/{property}/media/reorder', [AdminPropertyController::class, 'reorderMedia'])->name('properties.media.reorder');
 
     Route::resource('users', AdminUserController::class)->parameters([
         'users' => 'user'

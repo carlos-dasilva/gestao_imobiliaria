@@ -7,6 +7,7 @@ use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Models\PropertyImage;
+use App\Models\PropertyVideo;
 use App\Models\PropertyType;
 use App\Services\PropertyService;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,7 @@ class PropertyController extends Controller
 
     public function edit(Property $property)
     {
-        $property->load('images');
+        $property->load(['images','videos']);
         $types = PropertyType::orderBy('name')->get();
         return view('admin.properties.edit', compact('property','types'));
     }
@@ -70,5 +71,27 @@ class PropertyController extends Controller
         $this->service->removeImage($image);
         return redirect()->back()->with('success', 'Imagem removida.');
     }
-}
 
+    public function setCoverVideo(Property $property, PropertyVideo $video): RedirectResponse
+    {
+        $this->service->setCoverVideo($property, $video);
+        return redirect()->back()->with('success', 'Capa atualizada.');
+    }
+
+    public function deleteVideo(Property $property, PropertyVideo $video): RedirectResponse
+    {
+        $this->service->removeVideo($video);
+        return redirect()->back()->with('success', 'Vídeo removido.');
+    }
+
+    public function reorderMedia(Request $request, Property $property): RedirectResponse
+    {
+        $data = $request->validate([
+            'items' => ['required','array'],
+            'items.*.type' => ['required','in:image,video'],
+            'items.*.id' => ['required','integer'],
+        ]);
+        $this->service->reorderMedia($property, $data['items']);
+        return redirect()->back()->with('success', 'Ordem atualizada.');
+    }
+}
