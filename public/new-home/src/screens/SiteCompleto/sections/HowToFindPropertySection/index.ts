@@ -1,0 +1,1 @@
+export { HowToFindPropertySection } from "./HowToFindPropertySection";

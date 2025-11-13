@@ -1,0 +1,1 @@
+export { PropertyAreasSection } from "./PropertyAreasSection";

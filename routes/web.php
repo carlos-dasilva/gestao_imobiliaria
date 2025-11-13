@@ -12,11 +12,189 @@ use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\AboutController as AdminAboutController;
 use App\Http\Controllers\Admin\PrivacyController as AdminPrivacyController;
 use App\Http\Controllers\Admin\TermsController as AdminTermsController;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Route as RouteFacade;
+use Illuminate\Support\Facades\Log;
+use App\Models\Property;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/imoveis', [PropertyPublicController::class, 'index'])->name('properties.index');
 Route::get('/imoveis/{slug}', [PropertyPublicController::class, 'show'])->name('properties.show');
+
+// Static built pages (Vite dist) mantendo URL sem redirecionar
+Route::get('/new-home', function () {
+    $file = public_path('new-home/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render', [
+        'page' => 'new-home',
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+})->name('new-home')->middleware('relax.csp');
+Route::get('/new-home/', function () {
+    $file = public_path('new-home/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render', [
+        'page' => 'new-home',
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+})->middleware('relax.csp');
+
+Route::get('/new-imovel', function () {
+    $file = public_path('new-imovel/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render', [
+        'page' => 'new-imovel',
+        'slug' => null,
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+})->name('new-imovel')->middleware('relax.csp');
+Route::get('/new-imovel/', function () {
+    $file = public_path('new-imovel/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render', [
+        'page' => 'new-imovel',
+        'slug' => null,
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+})->middleware('relax.csp');
+
+// New property detail page using built React app, preserving URL with slug
+Route::get('/new-imovel/{slug}', function (string $slug) {
+    // Serve the built SPA shell; the app will fetch data from the JSON endpoint below
+    $file = public_path('new-imovel/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render', [
+        'page' => 'new-imovel',
+        'slug' => $slug,
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+// Important: do not match assets under /new-imovel/dist/*
+// Restrict slug to a single segment without '/'
+})->where('slug', '^(?!dist$)[^/]+')->name('new-imovel.show')->middleware('relax.csp');
+
+// Catch-all for any nested path under /new-imovel (except /new-imovel/dist/*),
+// ensuring SPA shell is served and CSP applied. Helps with proxies / alt path parsing.
+Route::get('/new-imovel/{path}', function (string $path) {
+    $file = public_path('new-imovel/dist/index.html');
+    abort_unless(file_exists($file), 404);
+    Log::channel('system')->info('spa.render.catchall', [
+        'page' => 'new-imovel',
+        'path' => $path,
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+    ]);
+    return response()->file($file, ['Content-Type' => 'text/html; charset=UTF-8']);
+})->where('path', '^(?!dist(?:/|$)).+')->middleware('relax.csp');
+
+// Lightweight JSON endpoint consumed by the new-imovel React page
+Route::get('/api/public/properties/{slug}', function (string $slug) {
+    Log::channel('system')->info('property.json.request', [
+        'slug' => $slug,
+        'host' => request()->getHost(),
+        'uri' => request()->getRequestUri(),
+        'ip' => request()->ip(),
+        'ua' => request()->userAgent(),
+    ]);
+
+    try {
+        $property = Property::with(['type','images' => function($q){ $q->orderBy('sort_order'); }, 'videos'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        Log::channel('system')->warning('property.json.not_found', [
+            'slug' => $slug,
+            'uri' => request()->getRequestUri(),
+        ]);
+        abort(404);
+    }
+
+    // Build media list (images + videos) with order and cover info
+    $images = $property->images->map(function($img){
+        $p = $img->path;
+        if (!$p) return null;
+        $disk = Storage::disk('public');
+        $src = $disk->exists($p) ? $disk->url($p) : asset('storage/'.ltrim($p, '/'));
+        return [
+            'type' => 'image',
+            'id' => $img->id,
+            'is_cover' => (bool)($img->is_cover ?? false),
+            'sort' => (int)($img->sort_order ?? 0),
+            'src' => $src,
+        ];
+    })->filter();
+
+    $videos = $property->videos->map(function($v){
+        return [
+            'type' => 'video',
+            'id' => $v->id,
+            'is_cover' => (bool)($v->is_cover ?? false),
+            'sort' => (int)($v->sort_order ?? 0),
+            'embed' => $v->embed_url,
+            'thumb' => $v->thumb_url,
+            'url' => $v->url,
+        ];
+    });
+
+    $media = $images->merge($videos)->sortBy('sort')->values();
+    $coverItem = $media->firstWhere('is_cover', true) ?? $media->first();
+    $coverUrl = null;
+    if ($coverItem) {
+        $coverUrl = $coverItem['type'] === 'video' ? ($coverItem['thumb'] ?? null) : ($coverItem['src'] ?? null);
+    }
+
+    $data = [
+        'id' => $property->id,
+        'title' => $property->title,
+        'slug' => $property->slug,
+        'description' => $property->description,
+        'price' => $property->price !== null ? (float)$property->price : null,
+        'area' => $property->area,
+        'bedrooms' => $property->bedrooms,
+        'bathrooms' => $property->bathrooms,
+        'garages' => $property->garages,
+        'city' => $property->city,
+        'state' => $property->state,
+        'address' => $property->address,
+        'type' => [
+            'id' => optional($property->type)->id,
+            'name' => optional($property->type)->name,
+            'slug' => optional($property->type)->slug,
+        ],
+        'images' => $images->pluck('src')->values(),
+        'cover_url' => $coverUrl,
+        'videos' => $property->videos->map(function($v){
+            return [
+                'provider' => $v->provider,
+                'video_id' => $v->video_id,
+                'url' => $v->url,
+                'embed_url' => $v->embed_url ?? null,
+                'thumb_url' => $v->thumb_url ?? null,
+            ];
+        })->values(),
+        'media' => $media,
+    ];
+
+    Log::channel('system')->info('property.json.success', [
+        'slug' => $slug,
+        'property_id' => $property->id,
+        'images_count' => count($data['images']),
+        'has_cover' => !empty($data['cover_url']),
+    ]);
+
+    return response()->json($data);
+})->name('api.public.properties.show');
 
 // Static pages
 Route::view('/quem-somos', 'pages.quem-somos')->name('about');

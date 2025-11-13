@@ -1,0 +1,1 @@
+export { PaginaDeImovel } from "./PaginaDeImovel";

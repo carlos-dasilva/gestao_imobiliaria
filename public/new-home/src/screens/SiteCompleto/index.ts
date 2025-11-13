@@ -1,0 +1,1 @@
+export { SiteCompleto } from "./SiteCompleto";
